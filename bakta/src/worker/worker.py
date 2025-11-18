@@ -111,6 +111,7 @@ def main():
         'worker',
         '--loglevel=info',
         '--concurrency=2',
+        '--queues=bakta',
         f'--hostname=batka@%h'
     ])
 
