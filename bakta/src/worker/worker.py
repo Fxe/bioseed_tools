@@ -76,7 +76,7 @@ def bakta_delete(self, name):
 
     job_dir = f'/host/run/{name}'
     if not os.path.exists(job_dir):
-        raise ValueError(f'Invalid job dir: {job_dir} does not exist')
+        return False
 
     shutil.rmtree(job_dir)
 
