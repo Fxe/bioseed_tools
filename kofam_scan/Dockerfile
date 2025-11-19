@@ -17,9 +17,6 @@ WORKDIR /opt/hmmer-3.4/
 RUN ./configure
 RUN make install
 
-
-RUN wget -qO- https://astral.sh/uv/install.sh | sh
-
 # clean up apt cache to keep the image small
 RUN rm -rf /var/lib/apt/lists/*
 
@@ -39,14 +36,17 @@ RUN ruby -e 'require "rubygems"; \
 WORKDIR /app
 
 # (Optional) copy your project files
-COPY ./src /opt
+COPY ./src/kofam_scan /opt/kofam_scan
 
+RUN wget -qO- https://astral.sh/uv/install.sh | sh
+RUN mkdir /worker
+RUN /root/.local/bin/uv venv --python 3.13 /worker/env
 COPY ./src/worker/worker.py /worker/worker.py
 COPY ./src/worker/run_worker.sh /worker/run_worker.sh
 
 RUN chmod a+x /worker/run_worker.sh
 
-RUN /bin/bash -c "source /worker/env/bin/activate && uv pip install celery[redis]"
+RUN /bin/bash -c "source /worker/env/bin/activate && /root/.local/bin/uv pip install celery[redis]"
 
 # (Optional) install Python deps
 # RUN pip install --no-cache-dir -r requirements.txt
