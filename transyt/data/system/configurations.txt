@@ -1,0 +1,82 @@
+                                                        ####    CONFIGURATION FILE      ####
+
+#This file contains the configurations in which TranSyT depends.
+#All configurations are editable, just place the value or array of values desired next to the "=" sign after the keyWord
+
+# 1 - E-value threshold to automatically accept result (use the format xE-x where x represents numbers).
+EvalueAccept=0
+
+# 2 - Similarity score blast TCDB
+similarity=0.3
+
+# 3 - Path to blastp executable or system alias (ex: '/usr/local/ncbi/blast/bin/blastp' or 'blastp')
+blastpAlias=blastp
+
+# 4 - Alpha value for reactions annotation
+alpha=0.75
+
+# 5 - Penalty of reactions that are associated to a low number of homologous genes (used in taxonomy score)
+beta=0.3
+
+# 6 - Minimum hits to avoid penalty in taxonomy score calculations
+minHits=2
+
+# 7 - E-value threshold for blast against TCDB sequences file (use the format xE-x where x represents numbers).
+Evalue=1E-20
+
+# 8 - Blast query coverage threshold.
+coverage=0.8
+
+# 9 - Blast bit score threshold.
+bitScore=50
+
+# 10 - Select the IDs to generate the reactions. Select 'ModelSEED', 'BiGG', 'MetaCyc', or 'KEGG'.
+IDsDatabase=ModelSEED
+
+# 11 - Allowed difference between compartments (set a value between 0% and 50%).
+difference=30
+
+# 12 - Minimum alpha helices.
+helices=1
+
+# 13 - Minimum beta strands for barrels identification.
+strands=8
+
+# 14 - URI for bolt connection to TranSyT's internal database.
+uri=bolt://localhost:37687
+
+# 15 - Database username
+username=neo4j
+
+# 16 - Database password
+password=password
+
+# 17 - Score above which a reaction is accepted
+annotationScore=0.75
+
+# 18 - Paramenter used to balance the weight between frenquency and similarity scores
+alphaFamilies=0.4
+
+# 19 - Override common ontologies filter (true or false)
+overrideCommonOnt=false
+
+# 20 - URI for bolt connection to Reference TranSyT's internal database.
+ref_uri=bolt://localhost:37687
+
+# 21 - Reference Database username
+ref_username=neo4j
+
+# 22 - Reference Database password
+ref_password=password
+
+# 23 - Percentage of blast the top blast results that should be accepted for each entry.
+percent_accept=10
+
+# 24 - Threshold for config#23 acceptance
+limit_evalue_accept=1E-50
+
+# 25 - Ignore method 1
+ignore_m1=false
+
+# 26 - Force TranSyT to run BLAST and skip cached results
+force_blast=true
