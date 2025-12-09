@@ -27,7 +27,8 @@ COPY ./worker/run_worker.sh /worker/run_worker.sh
 
 RUN chmod a+x /worker/run_worker.sh
 
-ENTRYPOINT ["/bin/bash"]
+#ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/worker/run_worker.sh"]
 
 #COPY entrypoint.sh /
 
