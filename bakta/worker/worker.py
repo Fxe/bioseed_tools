@@ -9,6 +9,7 @@ import json
 BAKTA_OUTPUT_FOLDER_NAME = 'results'
 TIMEOUT = 3600 * 10  # 1 hour X
 QUEUE = 'bakta'
+EXEC_PATH = '/local/bakta/run'
 
 # Configure Celery
 app = Celery(
@@ -41,6 +42,24 @@ app.conf.update(
         f'{QUEUE}.*': {'queue': QUEUE, 'routing_key': QUEUE},
     },
 )
+
+
+@app.task(bind=True, name='bakta.pipeline')
+def pipeline(self, args, genome, output):
+    job_dir = f'{EXEC_PATH}/pipeline/{output}'
+    tmp = f'{job_dir}/tmp'
+    if os.path.exists(job_dir):
+        raise ValueError(f'Invalid job dir: {job_dir} exists')
+    os.makedirs(job_dir)
+    os.makedirs(tmp)
+    cmd = [
+        'bakta',
+        args,
+        '--db', '/host/db',
+        '--output', job_dir,
+        '--tmp-dir', tmp,
+        genome
+    ]
 
 
 @app.task(bind=True, name='bakta.bakta_proteins')
