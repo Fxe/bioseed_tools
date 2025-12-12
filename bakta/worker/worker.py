@@ -70,23 +70,24 @@ def bakta_bakta_proteins(self, threads, name, proteins, use_index=True, index_re
 
     #self.update_state(state='PROGRESS', meta={'status': 'Running test command...'})
 
-
-
     if use_index:
         from pymongo import MongoClient
-        client = MongoClient('poplar.cels.anl.gov', 27017)
-        database = client['database']
+        database = MongoClient('poplar.cels.anl.gov', 27017)['database']
         col_bakta = database['seq_protein_bakta']
         for k in proteins:
             _doc = col_bakta.find_one({'_id': k})
             if _doc:
                 pass
 
-
-    job_dir = f'/host/run/{name}'
+    job_dir = f'{EXEC_PATH}/proteins/{name}'
     if os.path.exists(job_dir):
         raise ValueError(f'Invalid job dir: {job_dir} exists')
-    os.makedirs(f'/host/run/{name}')
+    os.makedirs(job_dir)
+
+    with open(f'{job_dir}/input.faa', 'w') as fh:
+        for protein_id, protein_seq in proteins.items():
+            fh.write(f'>{protein_id}\n')
+            fh.write(f'{protein_seq}\n')
 
     # Build cmd
     cmd = [
@@ -96,11 +97,6 @@ def bakta_bakta_proteins(self, threads, name, proteins, use_index=True, index_re
         '--output', f'{job_dir}/{BAKTA_OUTPUT_FOLDER_NAME}',
         f'{job_dir}/input.faa',
     ]
-
-    with open(f'{job_dir}/input.faa', 'w') as fh:
-        for protein_id, protein_seq in proteins.items():
-            fh.write(f'>{protein_id}\n')
-            fh.write(f'{protein_seq}\n')
 
     result = subprocess.run(
         cmd,
