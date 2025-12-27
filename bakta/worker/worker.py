@@ -136,7 +136,7 @@ def bakta_bakta_proteins(self, threads, name, proteins, use_index=True, index_re
 @app.task(bind=True, name='bakta.delete')
 def bakta_delete(self, name):
 
-    job_dir = f'/host/run/{name}'
+    job_dir = f'{EXEC_PATH}/{name}/'
     if not os.path.exists(job_dir):
         return False
 
@@ -148,7 +148,7 @@ def bakta_delete(self, name):
 @app.task(bind=True, name='bakta.get_result')
 def bakta_get_result(self, name):
 
-    job_dir = f'/host/run/{name}'
+    job_dir = f'{EXEC_PATH}/{name}/'
     if not os.path.exists(job_dir):
         raise ValueError(f'Invalid job dir: {job_dir} does not exist')
 
